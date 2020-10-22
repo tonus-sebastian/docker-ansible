@@ -15,12 +15,12 @@
         state: present
       when: ansible_distribution == "CentOS"
     - name: pull image docker
-      docker_images:
+      docker_image:
         name: "{{ image }}"
         state: present
         force: yes
     - name: create container
-      docker_containers:
+      docker_container:
         name: docker-ansible
         image: "{{ image }}"
         state: started
