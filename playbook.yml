@@ -1,0 +1,30 @@
+- hosts: server
+  vars:
+  - image: ajizkai/apache-docker-ansible
+  tasks:
+    - name: install pyton-docker di buntu
+      apt:
+        name:
+          - python
+          - python-docker
+        state: present
+      when: ansible_distribution == "Ubuntu"
+    - name: install pyton-docker centos
+      yum:
+        name: python-docker
+        state: present
+      when: ansible_distribution == "CentOS"
+    - name: pull image docker
+      docker_images:
+        name: "{{ image }}"
+        state: present
+        force: yes
+    - name: create container
+      docker_containers:
+        name: docker-ansible
+        image: "{{ image }}"
+        state: started
+        published_ports:
+        - 10000:80
+        recreate: yes
+  
